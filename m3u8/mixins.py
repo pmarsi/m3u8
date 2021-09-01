@@ -1,6 +1,5 @@
-
 import os
-from m3u8.parser import is_url
+from tcs_hls.hlslib.m3u8.parser import is_url
 
 try:
     import urlparse as url_parser
@@ -12,11 +11,10 @@ def _urijoin(base_uri, path):
     if is_url(base_uri):
         return url_parser.urljoin(base_uri, path)
     else:
-        return os.path.normpath(os.path.join(base_uri, path.strip('/')))
+        return os.path.normpath(os.path.join(base_uri, path.strip("/")))
 
 
 class BasePathMixin(object):
-
     @property
     def absolute_uri(self):
         if self.uri is None:
@@ -25,7 +23,9 @@ class BasePathMixin(object):
             return self.uri
         else:
             if self.base_uri is None:
-                raise ValueError('There can not be `absolute_uri` with no `base_uri` set')
+                raise ValueError(
+                    "There can not be `absolute_uri` with no `base_uri` set"
+                )
             return _urijoin(self.base_uri, self.uri)
 
     @property
@@ -48,7 +48,6 @@ class BasePathMixin(object):
 
 
 class GroupedBasePathMixin(object):
-
     def _set_base_uri(self, new_base_uri):
         for item in self:
             item.base_uri = new_base_uri
